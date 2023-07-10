@@ -9,13 +9,11 @@ namespace _2Parcial_BonillaAp1.Shared.Models
     [Key]
     public int DetalleId { get; set; }
 
+    public int EntradaId { get; set; }
+
 	public int ProductoId { get; set; }
-
-	public string? Producto { get; set; }
-
-	public string? Descripcion { get; set; }
 	
-    public int Cantidad { get; set; }
+    public int CantidadUtilizada { get; set; }
     
     }
 }
