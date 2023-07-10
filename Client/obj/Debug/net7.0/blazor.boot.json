@@ -214,14 +214,14 @@
       "netstandard.dll": "sha256-OYYuPT3JUknj4LdYIa58zF7kDB3tCnLzjCSuhEjtKXM=",
       "System.Private.CoreLib.dll": "sha256-EVS7zPxPV\/41g2mzPwdXtwiigWxI\/SeAHme1IgyD6tc=",
       "2Parcial_BonillaAp1.Shared.dll": "sha256-4q4F9NnLdh9ChK1F\/psV9NH+AAqQ+WGnzKARSNLSph8=",
-      "2Parcial_BonillaAp1.Client.dll": "sha256-VBcR6rHNfQOhlxB4opUDUt4McychXLHloJ\/95Oe53wo="
+      "2Parcial_BonillaAp1.Client.dll": "sha256-tc3Ui5DS\/6jseYdA2DBVz\/OYa7GsPStMcHQyYwbOZI8="
     },
     "extensions": null,
     "lazyAssembly": null,
     "libraryInitializers": null,
     "pdb": {
       "2Parcial_BonillaAp1.Shared.pdb": "sha256-DGKH6IVUdIfEXRkCXS6nc\/Cd4GZy5f+cnGscrsACs2Y=",
-      "2Parcial_BonillaAp1.Client.pdb": "sha256-7MbMd2zKljPtj77w5ysBgaGmqHnJVQAASWJE2bytjC4="
+      "2Parcial_BonillaAp1.Client.pdb": "sha256-u5yzOLNhRsq86Z4aPwgbkM+QpSWSTUGcWSt7SUylZs0="
     },
     "runtime": {
       "dotnet.7.0.5.nkau9bobbe.js": "sha256-codB25EodaFEP43MDCfMBuKXU4LqurUKnQrpoMIFnPs=",

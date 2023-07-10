@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "P4/JiawjYbSuzy0znSJbeH7jl+bRsDP5e55W9fjpZ9SFchoSwFfrpG6i8XBX8QqqGD3oSnNHaT9Ibm4oaBk1Kg==",
+  "dgSpecHash": "u+YoRem35xqbAjGhQfHEB9NgeQfunomW5Wrjf8mNCqWHq5XEfAL6vU2/bIG/xdyGOU44wM8LWNPxyUPyIbMCwA==",
   "success": true,
-  "projectFilePath": "C:\\BlazorWasm\\2Parcial_BonillaAp1\\server\\2Parcial_BonillaAp1.Server.csproj",
+  "projectFilePath": "C:\\BlazorWasm\\2Parcial_BonillaAp1\\Server\\2Parcial_BonillaAp1.Server.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jose_\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\jose_\\.nuget\\packages\\microsoft.aspnetcore.authorization\\7.0.5\\microsoft.aspnetcore.authorization.7.0.5.nupkg.sha512",
