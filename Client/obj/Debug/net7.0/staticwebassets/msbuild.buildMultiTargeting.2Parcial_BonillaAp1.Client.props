@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\2Parcial_BonillaAp1.Client.props" />
+</Project>

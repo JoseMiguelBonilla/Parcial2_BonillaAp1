@@ -1,0 +1,196 @@
+@page "/Registro"
+@inject HttpClient httpClient
+
+<EditForm Model="ProductoId" OnValidSubmit="Guardar">
+	<DataAnnotationsValidator />
+
+	<div class="container">
+		<div class="card shadow-lg">
+			<div class="card-header">
+				<h3>Registro de productos</h3>
+			</div>
+			<div class="card-body">
+				@*Buscar*@
+				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4">
+					<label>Id</label>
+					<div class="input-group mb-3">						
+						<InputNumber @bind-Value="Producto.ProductoId" class="form-control" aria-describedby="buscarButton" />
+						<button @onclick="Buscar" class="btn btn-outline-primary" type="button" id="buscarButton">
+							<i class="oi oi-magnifying-glass" />
+						</button>
+					</div>
+				</div>
+
+				@*Fecha*@
+				<div class="col-4">
+					<label class="form-laber">Fecha</label>
+					<InputDate @bind-Value="Producto.Fecha" class="form-control"></InputDate>
+					<ValidationMessage For="@(() => Producto.Fecha)" />
+				</div>
+
+				@*Concepto*@
+				<div class="mb-3">
+					<label class="form-label">Concepto</label>
+					<InputText @bind-Value="Producto.Concepto" class="form-control"></InputText>
+					<ValidationMessage For="@(() => Producto.Concepto)" />
+				</div>
+
+				@*DETALLE*@
+				<fieldset class="border-success border border-1">
+					<div class="card-header">
+						<h3>Utilizados</h3>
+					</div>
+					<div class="row m-1">
+						@*Producto*@
+						<div class="col-8">
+							<label>Producto:</label>
+							<InputSelect class="form-control" @bind-Value="detalle.Producto"></InputSelect>
+						</div>
+
+						@*Cantidad*@
+						<div class="col-2">
+							<label>Cantidad:</label>
+							<InputNumber class="form-control" @bind-Value="detalle.Cantidad"></InputNumber>
+						</div>
+
+						@*Boton agregar*@
+						<div class="col-2">
+						
+							<br>
+							<button type="button" class="btn btn-primary input-group-text" @onclick="Guardar">
+								<span class="oi oi-plus">Agregar</span>
+							</button>
+						</div>
+					</div>
+
+					@*Tabla de detalles*@
+					<hr />
+					<table class="table table-bordered table-light m-1">
+						<thead class="thead">
+							<tr class="table">
+								<th>Producto</th>
+								<th>Descripci&oacuten</th>
+								<th>Cantidad</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var detalle in Producto.ClientesDetalle)
+							{
+								<tr>
+									<td>@(DescripcionTipo(detalle.DetalleId))</td>
+									<td>@detalle.Producto</td>
+									<td> <button @onclick="@(() => Eliminar())"><i class="oi oi-trash" /> Eliminar</button>   </td>
+								</tr>
+							}
+						</tbody>
+					</table>
+					<hr />
+				</fieldset>
+
+				<hr />
+
+				<fieldset class="border-success border border-1">
+					<div class="card-header">
+						<h3>Producido</h3>
+					</div>
+					<div class="row m-1">
+						@*Producto*@
+						<div class="col-8">
+							<label>Producto:</label>
+							<InputText class="form-control" @bind-Value="detalle.Producto" />
+						</div>
+
+						@*Cantidad*@
+						<div class="col-2">
+							<label>Cantidad:</label>
+							<InputNumber class="form-control" @bind-Value="detalle.Cantidad"></InputNumber>
+						</div>
+					</div>
+				</fieldset>				
+			</div>
+
+			<div class="card-footer d-flex justify-content-center">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-outline-primary" @onclick="Nuevo"> <i class="oi oi-file" /> Nuevo</button>
+					<button type="submit" class="btn btn-outline-success"> <i class="oi oi-document" /> Guardar</button>
+					<button type="button" class="btn btn-outline-danger" @onclick="Eliminar"><i class="io io-trash" /> Eliminar</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</EditForm>
+
+@code {
+	[Parameter]
+	public int ProductoId { get; set; }
+	public Productos Producto { get; set; } = new Productos();
+	public string Mensaje { get; set; } = string.Empty;
+	public ProductosDetalle detalle { get; set; } = new ProductosDetalle();
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (ProductoId > 0)
+		{
+			this.Producto.ProductoId = ProductoId;
+			await Buscar();
+		}
+	}
+
+	public async Task Buscar()
+	{
+		var ingresoEncotrado = await httpClient.GetFromJsonAsync<Productos>($"api/Productos/{Producto.ProductoId}");
+
+		if (ingresoEncotrado != null)
+		{
+			this.Producto = ingresoEncotrado;
+			StateHasChanged();
+		}
+		else
+		{
+			Mensaje = "No fue encontrado";
+		}
+	}
+
+	public async void Guardar()
+	{
+		using var response = await httpClient.PostAsJsonAsync("api/Productos", Producto);
+		if (!response.IsSuccessStatusCode)
+		{
+			Mensaje = response.ReasonPhrase ?? "Error";
+			return;
+		}
+		else
+		{
+			var devuelto = await response.Content.ReadFromJsonAsync<Productos>();
+			if (devuelto is not null)
+			{
+				Producto = devuelto;
+				StateHasChanged();
+			}
+		}
+	}
+
+	public void Nuevo()
+	{
+		this.Producto = new Productos();
+		Mensaje = string.Empty;
+	}
+
+	public async Task Eliminar()
+	{
+		using var response = await httpClient.DeleteAsync($"api/Productos{Producto.ProductoId}");
+		if (!response.IsSuccessStatusCode)
+		{
+			Mensaje = response.ReasonPhrase ?? "Error";
+			return;
+		}
+		else
+			Nuevo();
+	}
+
+	public string DescripcionTipo(int tipoId)
+	{
+		return detalle.Producto;
+	}
+}
