@@ -7,12 +7,12 @@ namespace _2Parcial_BonillaAp1.Shared.Models
     {
         [Key]
 
+        public int? TipoId { get; set; }
+
         public int ProductoId {get; set; }
 
         public String? Descripcion { get; set; }
-
-        public int Tipo { get; set; }
-
+        
         public int Existencia { get; set;}
     }
 }

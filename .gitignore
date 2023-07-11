@@ -1,0 +1,6 @@
+Client/bin/**
+Client/obj/**
+Server/obj/**
+Server/bin/**
+Shared/bin/**
+Shared/obj/**

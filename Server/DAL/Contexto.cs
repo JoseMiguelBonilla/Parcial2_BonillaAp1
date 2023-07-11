@@ -7,19 +7,19 @@ namespace _2Parcial_BonillaAp1.Server.DAL
     {
         public Contexto(DbContextOptions<Contexto> options) : base(options) {}
 
-        public DbSet<EntradasProductos> EntradasProductos {get;set;} 
-        public DbSet<ProductosDetalle> ProductosDetalles {get;set;} 
+        public DbSet<Entradas> Entradas {get;set;} 
+        public DbSet<EntradasDetalle> EntradasDetalle {get;set;} 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<TipoProductos>().HasData(new List<TipoProductos>()
         {
-            new TipoProductos(){Tipo=1, Descripcion="Mani"},
-            new TipoProductos(){Tipo=3, Descripcion="Pasas"},
-            new TipoProductos(){Tipo=4, Descripcion="Pistacho" },
-            new TipoProductos(){Tipo=5, Descripcion="Ciruela" },
-            new TipoProductos(){Tipo=6, Descripcion="Arandanos"}
+            new TipoProductos(){TipoId=1, Descripcion="Mani"},
+            new TipoProductos(){TipoId=3, Descripcion="Pasas"},
+            new TipoProductos(){TipoId=4, Descripcion="Pistacho" },
+            new TipoProductos(){TipoId=5, Descripcion="Ciruela" },
+            new TipoProductos(){TipoId=6, Descripcion="Arandanos"}
         });
     }
 

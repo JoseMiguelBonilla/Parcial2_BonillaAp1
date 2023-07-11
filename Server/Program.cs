@@ -1,10 +1,13 @@
+using _2Parcial_BonillaAp1.Server.DAL;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-/*var ConStr = builder.Configuration.GetConnectionString("ConStr");
+var ConStr = builder.Configuration.GetConnectionString("ConStr");
 
-builder.Services.AddDbContextFactory<Contexto>(options => options.UseSqlite(ConStr));*/
+builder.Services.AddDbContextFactory<Contexto>(options => options.UseSqlite(ConStr));
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
