@@ -9,37 +9,29 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = browser
 build_property.RootNamespace = 2Parcial_BonillaAp1.Client
 build_property.RootNamespace = 2Parcial_BonillaAp1.Client
-build_property.ProjectDir = c:\BlazorWasm\2Parcial_BonillaAp1\Client\
+build_property.ProjectDir = C:\BlazorWasm\2Parcial_BonillaAp1\Client\
 build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = c:\BlazorWasm\2Parcial_BonillaAp1\Client
+build_property.MSBuildProjectDirectory = C:\BlazorWasm\2Parcial_BonillaAp1\Client
 build_property._RazorSourceGeneratorDebug = 
 
-[c:/BlazorWasm/2Parcial_BonillaAp1/Client/App.razor]
+[C:/BlazorWasm/2Parcial_BonillaAp1/Client/App.razor]
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/BlazorWasm/2Parcial_BonillaAp1/Client/Pages/Consulta.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uc3VsdGEucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
-[c:/BlazorWasm/2Parcial_BonillaAp1/Client/Pages/Registro.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0cm8ucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
-[c:/BlazorWasm/2Parcial_BonillaAp1/Client/Shared/SurveyPrompt.razor]
+[C:/BlazorWasm/2Parcial_BonillaAp1/Client/Shared/SurveyPrompt.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/BlazorWasm/2Parcial_BonillaAp1/Client/_Imports.razor]
+[C:/BlazorWasm/2Parcial_BonillaAp1/Client/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/BlazorWasm/2Parcial_BonillaAp1/Client/Shared/MainLayout.razor]
+[C:/BlazorWasm/2Parcial_BonillaAp1/Client/Shared/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-ysqe2mhjks
 
-[c:/BlazorWasm/2Parcial_BonillaAp1/Client/Shared/NavMenu.razor]
+[C:/BlazorWasm/2Parcial_BonillaAp1/Client/Shared/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-0wm3lj8spu
