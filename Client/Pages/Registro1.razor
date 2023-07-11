@@ -1,5 +1,4 @@
-@page "/Registro"
-@page "/Entradas/{EntradaId:int}"
+@page "/Registro1"
 @inject HttpClient httpClient
 
 <EditForm Model="EntradaId" OnValidSubmit="Guardar">
@@ -147,7 +146,7 @@
 </EditForm>
 
 @code {
-	[Parameter]
+
 	public int EntradaId { get; set; }
 	public Entradas Entradas { get; set; } = new Entradas();
 
@@ -159,8 +158,7 @@
 
 	public EntradasDetalle detalle { get; set; } = new EntradasDetalle();
 	public IEnumerable<TipoProductos> TiposEntradasList { get; set; } = Enumerable.Empty<TipoProductos>();
-
-	protected override async Task OnInitializedAsync()
+protected override async Task OnInitializedAsync()
 	{
 		if (EntradaId > 0)
 		{
@@ -267,4 +265,5 @@
 		else
 			Nuevo();
 	}
+   
 }
