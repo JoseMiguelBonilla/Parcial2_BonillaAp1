@@ -3,13 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace _2Parcial_BonillaAp1.Shared.Models
 {
-    public class ProductosDetalle
+    public class EntradasDetalle
     {
     
     [Key]
-    public int DetalleId { get; set; }
 
     public int EntradaId { get; set; }
+
+    public int DetalleId { get; set; }
 
 	public int ProductoId { get; set; }
 	
