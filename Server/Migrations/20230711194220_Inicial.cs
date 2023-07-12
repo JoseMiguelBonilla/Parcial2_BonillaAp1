@@ -21,9 +21,9 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Fecha = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Concepto = table.Column<string>(type: "TEXT", nullable: true),
+                    CantidadProducida = table.Column<int>(type: "INTEGER", nullable: false),
                     PesoTotal = table.Column<int>(type: "INTEGER", nullable: false),
-                    ProductoId = table.Column<int>(type: "INTEGER", nullable: false),
-                    CantidadProducida = table.Column<int>(type: "INTEGER", nullable: false)
+                    ProductoId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,35 +31,53 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TipoProductos",
+                name: "Frutos",
                 columns: table => new
                 {
-                    TipoId = table.Column<int>(type: "INTEGER", nullable: false)
+                    FrutoId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ProductoId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Descripcion = table.Column<string>(type: "TEXT", nullable: true),
-                    Existencia = table.Column<int>(type: "INTEGER", nullable: false)
+                    Nombre = table.Column<string>(type: "TEXT", nullable: true),
+                    Disponibilidad = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TipoProductos", x => x.TipoId);
+                    table.PrimaryKey("PK_Frutos", x => x.FrutoId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductosDetalles",
+                name: "Products",
+                columns: table => new
+                {
+                    ProductoId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Descripcion = table.Column<string>(type: "TEXT", nullable: true),
+                    Existencia = table.Column<int>(type: "INTEGER", nullable: false),
+                    Peso = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.ProductoId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EntradasDetalle",
                 columns: table => new
                 {
                     DetalleId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     EntradaId = table.Column<int>(type: "INTEGER", nullable: false),
                     ProductoId = table.Column<int>(type: "INTEGER", nullable: false),
-                    CantidadUtilizada = table.Column<int>(type: "INTEGER", nullable: false)
+                    CantidadUtilizada = table.Column<int>(type: "INTEGER", nullable: false),
+                    Descripcion = table.Column<string>(type: "TEXT", nullable: true),
+                    FrutoId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Nombre = table.Column<string>(type: "TEXT", nullable: true),
+                    Disponibilidad = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductosDetalles", x => x.DetalleId);
+                    table.PrimaryKey("PK_EntradasDetalle", x => x.DetalleId);
                     table.ForeignKey(
-                        name: "FK_ProductosDetalles_Entradas_EntradaId",
+                        name: "FK_EntradasDetalle_Entradas_EntradaId",
                         column: x => x.EntradaId,
                         principalTable: "Entradas",
                         principalColumn: "EntradaId",
@@ -67,20 +85,20 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "TipoProductos",
-                columns: new[] { "TipoId", "Descripcion", "Existencia", "ProductoId" },
+                table: "Frutos",
+                columns: new[] { "FrutoId", "Disponibilidad", "Nombre" },
                 values: new object[,]
                 {
-                    { 1, "Mani", 0, 0 },
-                    { 3, "Pasas", 0, 0 },
-                    { 4, "Pistacho", 0, 0 },
-                    { 5, "Ciruela", 0, 0 },
-                    { 6, "Arandanos", 0, 0 }
+                    { 1, 100, "Mani" },
+                    { 2, 100, "Pasas" },
+                    { 3, 100, "Pistacho" },
+                    { 4, 100, "Ciruela" },
+                    { 5, 100, "Arandanos" }
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductosDetalles_EntradaId",
-                table: "ProductosDetalles",
+                name: "IX_EntradasDetalle_EntradaId",
+                table: "EntradasDetalle",
                 column: "EntradaId");
         }
 
@@ -88,10 +106,13 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ProductosDetalles");
+                name: "EntradasDetalle");
 
             migrationBuilder.DropTable(
-                name: "TipoProductos");
+                name: "Frutos");
+
+            migrationBuilder.DropTable(
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Entradas");

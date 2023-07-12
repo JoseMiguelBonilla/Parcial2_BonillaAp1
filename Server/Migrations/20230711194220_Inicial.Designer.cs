@@ -11,7 +11,7 @@ using _2Parcial_BonillaAp1.Server.DAL;
 namespace _2Parcial_BonillaAp1.Server.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20230711000222_Inicial")]
+    [Migration("20230711194220_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -46,7 +46,7 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                     b.ToTable("Entradas");
                 });
 
-            modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.ProductosDetalle", b =>
+            modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.EntradasDetalle", b =>
                 {
                     b.Property<int>("DetalleId")
                         .ValueGeneratedOnAdd()
@@ -55,8 +55,20 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                     b.Property<int>("CantidadUtilizada")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Disponibilidad")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("EntradaId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<int>("FrutoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Nombre")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("ProductoId")
                         .HasColumnType("INTEGER");
@@ -65,12 +77,61 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
 
                     b.HasIndex("EntradaId");
 
-                    b.ToTable("ProductosDetalles");
+                    b.ToTable("EntradasDetalle");
                 });
 
-            modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.TipoProductos", b =>
+            modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.Frutos", b =>
                 {
-                    b.Property<int?>("TipoId")
+                    b.Property<int>("FrutoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Disponibilidad")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Nombre")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("FrutoId");
+
+                    b.ToTable("Frutos");
+
+                    b.HasData(
+                        new
+                        {
+                            FrutoId = 1,
+                            Disponibilidad = 100,
+                            Nombre = "Mani"
+                        },
+                        new
+                        {
+                            FrutoId = 2,
+                            Disponibilidad = 100,
+                            Nombre = "Pasas"
+                        },
+                        new
+                        {
+                            FrutoId = 3,
+                            Disponibilidad = 100,
+                            Nombre = "Pistacho"
+                        },
+                        new
+                        {
+                            FrutoId = 4,
+                            Disponibilidad = 100,
+                            Nombre = "Ciruela"
+                        },
+                        new
+                        {
+                            FrutoId = 5,
+                            Disponibilidad = 100,
+                            Nombre = "Arandanos"
+                        });
+                });
+
+            modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.Productos", b =>
+                {
+                    b.Property<int>("ProductoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -80,55 +141,18 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                     b.Property<int>("Existencia")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ProductoId")
+                    b.Property<int>("Peso")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("TipoId");
+                    b.HasKey("ProductoId");
 
-                    b.ToTable("TipoProductos");
-
-                    b.HasData(
-                        new
-                        {
-                            TipoId = 1,
-                            Descripcion = "Mani",
-                            Existencia = 0,
-                            ProductoId = 0
-                        },
-                        new
-                        {
-                            TipoId = 3,
-                            Descripcion = "Pasas",
-                            Existencia = 0,
-                            ProductoId = 0
-                        },
-                        new
-                        {
-                            TipoId = 4,
-                            Descripcion = "Pistacho",
-                            Existencia = 0,
-                            ProductoId = 0
-                        },
-                        new
-                        {
-                            TipoId = 5,
-                            Descripcion = "Ciruela",
-                            Existencia = 0,
-                            ProductoId = 0
-                        },
-                        new
-                        {
-                            TipoId = 6,
-                            Descripcion = "Arandanos",
-                            Existencia = 0,
-                            ProductoId = 0
-                        });
+                    b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.ProductosDetalle", b =>
+            modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.EntradasDetalle", b =>
                 {
                     b.HasOne("_2Parcial_BonillaAp1.Shared.Models.Entradas", null)
-                        .WithMany("ClientesDetalle")
+                        .WithMany("EntradasDetalles")
                         .HasForeignKey("EntradaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -136,7 +160,7 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
 
             modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.Entradas", b =>
                 {
-                    b.Navigation("ClientesDetalle");
+                    b.Navigation("EntradasDetalles");
                 });
 #pragma warning restore 612, 618
         }
