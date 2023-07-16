@@ -5,7 +5,7 @@ namespace _2Parcial_BonillaAp1.Shared.Models
 {
     public class Productos 
     {
-        [Key]
+       [Key]
 
         public int ProductoId {get; set; }
 
@@ -13,6 +13,8 @@ namespace _2Parcial_BonillaAp1.Shared.Models
         
         public int Existencia { get; set;}
 
-        public int Peso { get; set; }
+        public decimal Peso { get; set; }
+
+        public int PresentacionId { get; set; } = 2;
     }
 }

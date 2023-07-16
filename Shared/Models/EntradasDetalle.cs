@@ -5,9 +5,7 @@ namespace _2Parcial_BonillaAp1.Shared.Models
 {
     public class EntradasDetalle
     {
-    
     [Key]
-
     public int DetalleId { get; set; }
 
     public int EntradaId { get; set; }

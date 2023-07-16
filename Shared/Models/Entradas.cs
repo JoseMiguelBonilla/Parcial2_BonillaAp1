@@ -9,13 +9,13 @@ namespace _2Parcial_BonillaAp1.Shared.Models
 	[Key]
 	public int EntradaId { get; set; }
 
-	public DateTime Fecha { get; set; }
+	public DateTime Fecha { get; set; } = DateTime.Now;
 
 	public string? Concepto { get; set; }
 
 	public int CantidadProducida { get; set;}
 
-	public int PesoTotal { get; set; }
+	public decimal PesoTotal { get; set; }
 
 	public int ProductoId { get; set; }
 

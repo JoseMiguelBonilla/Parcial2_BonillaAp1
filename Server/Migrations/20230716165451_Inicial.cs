@@ -22,7 +22,7 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                     Fecha = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Concepto = table.Column<string>(type: "TEXT", nullable: true),
                     CantidadProducida = table.Column<int>(type: "INTEGER", nullable: false),
-                    PesoTotal = table.Column<int>(type: "INTEGER", nullable: false),
+                    PesoTotal = table.Column<decimal>(type: "TEXT", nullable: false),
                     ProductoId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -31,32 +31,32 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Frutos",
+                name: "Presentaciones",
                 columns: table => new
                 {
-                    FrutoId = table.Column<int>(type: "INTEGER", nullable: false)
+                    PresentacionId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Nombre = table.Column<string>(type: "TEXT", nullable: true),
-                    Disponibilidad = table.Column<int>(type: "INTEGER", nullable: false)
+                    Descripcion = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Frutos", x => x.FrutoId);
+                    table.PrimaryKey("PK_Presentaciones", x => x.PresentacionId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "Productos",
                 columns: table => new
                 {
                     ProductoId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Descripcion = table.Column<string>(type: "TEXT", nullable: true),
                     Existencia = table.Column<int>(type: "INTEGER", nullable: false),
-                    Peso = table.Column<int>(type: "INTEGER", nullable: false)
+                    Peso = table.Column<decimal>(type: "TEXT", nullable: false),
+                    PresentacionId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.ProductoId);
+                    table.PrimaryKey("PK_Productos", x => x.ProductoId);
                 });
 
             migrationBuilder.CreateTable(
@@ -85,15 +85,25 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Frutos",
-                columns: new[] { "FrutoId", "Disponibilidad", "Nombre" },
+                table: "Presentaciones",
+                columns: new[] { "PresentacionId", "Descripcion" },
                 values: new object[,]
                 {
-                    { 1, 100, "Mani" },
-                    { 2, 100, "Pasas" },
-                    { 3, 100, "Pistacho" },
-                    { 4, 100, "Ciruela" },
-                    { 5, 100, "Arandanos" }
+                    { 1, "Saco" },
+                    { 2, "Caja" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Productos",
+                columns: new[] { "ProductoId", "Descripcion", "Existencia", "Peso", "PresentacionId" },
+                values: new object[,]
+                {
+                    { 1, "Mani", 100, 100m, 1 },
+                    { 2, "Pasas", 100, 100m, 1 },
+                    { 3, "Pistacho", 100, 100m, 1 },
+                    { 4, "Ciruela", 100, 100m, 1 },
+                    { 5, "Arandanos", 100, 100m, 1 },
+                    { 6, "Producto Mixto", 0, 1m, 2 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -109,10 +119,10 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                 name: "EntradasDetalle");
 
             migrationBuilder.DropTable(
-                name: "Frutos");
+                name: "Presentaciones");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Productos");
 
             migrationBuilder.DropTable(
                 name: "Entradas");

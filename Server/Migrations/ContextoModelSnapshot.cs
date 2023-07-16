@@ -32,8 +32,8 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("PesoTotal")
-                        .HasColumnType("INTEGER");
+                    b.Property<decimal>("PesoTotal")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("ProductoId")
                         .HasColumnType("INTEGER");
@@ -77,52 +77,29 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                     b.ToTable("EntradasDetalle");
                 });
 
-            modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.Frutos", b =>
+            modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.Presentacion", b =>
                 {
-                    b.Property<int>("FrutoId")
+                    b.Property<int>("PresentacionId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Disponibilidad")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Nombre")
+                    b.Property<string>("Descripcion")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("FrutoId");
+                    b.HasKey("PresentacionId");
 
-                    b.ToTable("Frutos");
+                    b.ToTable("Presentaciones");
 
                     b.HasData(
                         new
                         {
-                            FrutoId = 1,
-                            Disponibilidad = 100,
-                            Nombre = "Mani"
+                            PresentacionId = 1,
+                            Descripcion = "Saco"
                         },
                         new
                         {
-                            FrutoId = 2,
-                            Disponibilidad = 100,
-                            Nombre = "Pasas"
-                        },
-                        new
-                        {
-                            FrutoId = 3,
-                            Disponibilidad = 100,
-                            Nombre = "Pistacho"
-                        },
-                        new
-                        {
-                            FrutoId = 4,
-                            Disponibilidad = 100,
-                            Nombre = "Ciruela"
-                        },
-                        new
-                        {
-                            FrutoId = 5,
-                            Disponibilidad = 100,
-                            Nombre = "Arandanos"
+                            PresentacionId = 2,
+                            Descripcion = "Caja"
                         });
                 });
 
@@ -138,12 +115,65 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                     b.Property<int>("Existencia")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Peso")
+                    b.Property<decimal>("Peso")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PresentacionId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ProductoId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Productos");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductoId = 1,
+                            Descripcion = "Mani",
+                            Existencia = 100,
+                            Peso = 100m,
+                            PresentacionId = 1
+                        },
+                        new
+                        {
+                            ProductoId = 2,
+                            Descripcion = "Pasas",
+                            Existencia = 100,
+                            Peso = 100m,
+                            PresentacionId = 1
+                        },
+                        new
+                        {
+                            ProductoId = 3,
+                            Descripcion = "Pistacho",
+                            Existencia = 100,
+                            Peso = 100m,
+                            PresentacionId = 1
+                        },
+                        new
+                        {
+                            ProductoId = 4,
+                            Descripcion = "Ciruela",
+                            Existencia = 100,
+                            Peso = 100m,
+                            PresentacionId = 1
+                        },
+                        new
+                        {
+                            ProductoId = 5,
+                            Descripcion = "Arandanos",
+                            Existencia = 100,
+                            Peso = 100m,
+                            PresentacionId = 1
+                        },
+                        new
+                        {
+                            ProductoId = 6,
+                            Descripcion = "Producto Mixto",
+                            Existencia = 0,
+                            Peso = 1m,
+                            PresentacionId = 2
+                        });
                 });
 
             modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.EntradasDetalle", b =>

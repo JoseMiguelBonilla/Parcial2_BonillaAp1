@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using _2Parcial_BonillaAp1.Server.DAL;
 using _2Parcial_BonillaAp1.Shared.Models;
 
+
 namespace _2Parcial_BonillaAp1.Server.Controller
 {
     
@@ -20,66 +21,66 @@ namespace _2Parcial_BonillaAp1.Server.Controller
         }
      
          [HttpGet]
-         public async Task<ActionResult<IEnumerable<Entradas>>> GetEntradas()
+         public async Task<ActionResult<IEnumerable<Productos>>> GetProductos()
         {
-        if (_context.Entradas == null)
+        if (_context.Productos == null)
         {
           return NotFound();
         }
-        return await _context.Entradas.ToListAsync();
+        return await _context.Productos.AsNoTracking().ToListAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Entradas>> GetEntradas(int id)
+        public async Task<ActionResult<Productos>> GetProductos(int id)
         {
-        if (_context.Entradas == null)
+        if (_context.Productos == null)
         {
           return NotFound();
         }
-        var Entradas = await _context.Entradas.FindAsync(id);
+        var Productos = await _context.Productos.FindAsync(id);
 
-        if (Entradas == null)
+        if (Productos == null)
         {
             return NotFound();
         }
 
-        return Entradas;
+        return Productos;
          }
 
         [HttpPost]
-        public async Task<ActionResult<Entradas>> PostEntradas(Entradas Entradas)
+        public async Task<ActionResult<Productos>> PostProductos(Productos Productos)
         {
-        if (!EntradasExists(Entradas.ProductoId) )
-            _context.Entradas.Add(Entradas);
+        if (!ProductosExists(Productos.ProductoId) )
+            _context.Productos.Add(Productos);
         else
-            _context.Entradas.Update(Entradas);
+            _context.Productos.Update(Productos);
 
         await _context.SaveChangesAsync();
-        return Ok(Entradas);
+        return Ok(Productos);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEntradas(int id)
+        public async Task<IActionResult> DeleteProductos(int id)
         {
-        if (_context.Entradas == null)
+        if (_context.Productos == null)
         {
             return NotFound();
         }
-        var Entradas = await _context.Entradas.FindAsync(id);
-        if (Entradas == null)
+        var Productos = await _context.Productos.FindAsync(id);
+        if (Productos == null)
         {
             return NotFound();
         }
 
-        _context.Entradas.Remove(Entradas);
+        _context.Productos.Remove(Productos);
         await _context.SaveChangesAsync();
 
         return NoContent();
         }
 
-        private bool EntradasExists(int id)
+        private bool ProductosExists(int id)
         {
-        return (_context.Entradas?.Any(e => e.ProductoId == id)).GetValueOrDefault();
+        return (_context.Productos?.Any(e => e.ProductoId == id)).GetValueOrDefault();
         }
         
     }
