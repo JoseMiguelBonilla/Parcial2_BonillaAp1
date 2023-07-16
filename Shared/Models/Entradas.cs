@@ -20,7 +20,7 @@ namespace _2Parcial_BonillaAp1.Shared.Models
 	public int ProductoId { get; set; }
 
 	[ForeignKey("EntradaId")]
-	public ICollection<EntradasDetalle> EntradasDetalles { get; set; } = new List<EntradasDetalle>();
+	public ICollection<EntradasDetalles> EntradasDetalles { get; set; } = new List<EntradasDetalles>();
     
     }
 
