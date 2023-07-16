@@ -9,7 +9,7 @@ namespace _2Parcial_BonillaAp1.Server.DAL
         public DbSet<Entradas> Entradas {get;set;} 
         public DbSet<Productos > Productos {get;set;}
         public DbSet<Presentacion> Presentaciones {get;set;}
-        public DbSet<EntradasDetalle> EntradasDetalle {get;set;} 
+        public DbSet<EntradasDetalles> EntradasDetalles {get;set;} 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
