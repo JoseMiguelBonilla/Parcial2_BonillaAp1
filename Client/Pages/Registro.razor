@@ -1,0 +1,388 @@
+@page "/Registro"
+@page "/Registro/{EntradaId:int}"
+@inject HttpClient httpClient
+@inject NotificationService notify 
+
+<EditForm Model="EntradaId" OnValidSubmit="Guardar">
+	<DataAnnotationsValidator />
+
+	<div class="container">
+		<div class="card shadow-lg">
+			<div class="card-header">
+				<h3>Registro de Entradas</h3>
+			</div>
+			<div class="card-body">
+				@*Buscar*@
+				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4">
+					<label>EntradaId</label>
+					<div class="input-group mb-3">
+						<InputNumber @bind-Value="Entradas.EntradaId" class="form-control" aria-describedby="buscarButton" />
+						<button @onclick="Buscar" class="btn btn-outline-primary" type="button" id="buscarButton">
+							<i class="oi oi-magnifying-glass" />
+						</button>
+					</div>
+				</div>
+
+				@*Fecha*@
+				<div class="col-4">
+					<label class="form-laber">Fecha</label>
+					<InputDate @bind-Value="Entradas.Fecha" class="form-control"></InputDate>
+					<ValidationMessage For="@(() => Entradas.Fecha)" />
+				</div>
+
+				@*Concepto*@
+				<div class="mb-3">
+					<label class="form-label">Concepto</label>
+					<InputText @bind-Value="Entradas.Concepto" class="form-control"></InputText>
+					<ValidationMessage For="@(() => Entradas.Concepto)" />
+				</div>
+
+				@*DETALLE*@
+				<fieldset class="border-success border border-1">
+					<div class="card-header">
+						<h3>Utilizados</h3>
+					</div>
+					<div class="row m-1">
+						
+						@*Productos*@
+						<div class="col-8">
+							<label>Tipo de frutos para crear un producto :</label>
+							<InputSelect class="form-select" @bind-Value="Detalle.ProductoId">
+								<option value="0" disabled selected> [Seleccione] </option>
+								@foreach (var tipo in Productos.Where(o=>o.PresentacionId == 1))
+								{
+									<option value="@tipo.ProductoId"> "@tipo.Descripcion" </option>
+								}
+							</InputSelect>
+						</div>
+
+						@*CantidadUtilizada*@
+						<div class="col-2">
+							<label>CantidadUtilizada:</label>
+							<InputNumber class="form-control" @bind-Value="Detalle.CantidadUtilizada"></InputNumber>
+						</div>
+
+						@*Boton Agregar*@
+						<div class="col-2">
+							<br>
+							<button type="button" class="btn btn-primary input-group-text" @onclick="AgregarDetalle">
+								<span class="oi oi-plus">Agregar</span>
+							</button>
+						</div>
+						@if (ValidacionDetalle.Length > 0)
+						{
+							<label class="text-danger">@ValidacionDetalle</label>
+						}
+					</div>
+
+					@*Tabla de detalles*@
+					<hr />
+					<table class="table table-bordered table-light m-1">
+						<thead class="thead">
+							<tr class="table">
+								<th>Entradas</th>
+								<th>Descripci&oacuten</th>
+								<th>CantidadUtilizada</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							@foreach (var detalle in Entradas.EntradasDetalles )
+							{
+								<tr>
+									<td>@detalle.ProductoId</td>
+									<td>@detalle.CantidadUtilizada</td>
+									<td> <button @onclick="@(() => RemoverDetalle(detalle))"><i class="oi oi-trash" /> Eliminar</button>   </td>
+								</tr>
+							}
+						</tbody>
+
+						<div class="row justify-content-between">
+							<div class="col-8">
+								<label>Peso Total</label>
+								<div class="input-group mb-3">
+									<input disabled @bind-value="Total" class="form-control" />
+								</div>
+							</div>
+						</div>
+					</table>
+					<hr />
+				</fieldset>
+
+				<hr />
+
+				<fieldset class="border-success border border-1">
+					<div class="card-header">
+						<h3>Producido</h3>
+					</div>
+						<div class="row m-1">
+							@*Productos*@
+						<div class="col-8">
+							<label>Producto Producido :</label>
+							<InputSelect class="form-select" @bind-Value=@Producido.ProductoId>
+								<option value="0" disabled selected> [Seleccione] </option>
+								@foreach (var tipo in Productos.Where(o=>o.PresentacionId == 2))
+								{
+									<option value="@tipo.ProductoId"> "@tipo.Descripcion" </option>
+								}
+							</InputSelect>
+						</div>
+
+						@*CantidadUtilizada*@
+						<div class="col-2">
+							<label>CantidadUtilizada:</label>
+							<InputNumber class="form-control" @bind-Value="Detalle.CantidadUtilizada"></InputNumber>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+
+			<div class="card-footer d-flex justify-content-center">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-outline-primary" @onclick="Nuevo"> <i class="oi oi-file" /> Nuevo</button>
+					<button type="submit" class="btn btn-outline-success"> <i class="oi oi-document" /> Guardar</button>
+					<button type="button" class="btn btn-outline-danger" @onclick="Eliminar"><i class="io io-trash" /> Eliminar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	@if (Mensaje.Length > 0)
+	{
+		<label class="text-danger">@Mensaje</label>
+	}
+</EditForm>
+
+@code {
+
+	[Parameter]
+	public int EntradaId {get ; set;}
+	public int ProductoId {get; set;}
+	public Entradas Entradas {get; set;} = new Entradas ();
+	public IEnumerable<Productos> Productos {get; set;} = new List<Productos>();
+	public Productos Producido {get; set;} = new Productos();
+	public EntradasDetalle Detalle { get; set; } = new EntradasDetalle();
+	public int Productoseleccionado { get; set; } = 0;
+	public string NombreProducido { get; set; } = string.Empty;
+	public int Entradaseleccionado { get; set; } = 0;
+	public string Mensaje { get; set; } = string.Empty;
+	public string ValidacionDetalle { get; set; } = string.Empty;
+	public int Total { get; set; } = 0;
+	
+	
+	protected override async Task OnInitializedAsync()
+    {
+		if (EntradaId > 0)
+		{
+			this.Entradas.EntradaId = EntradaId;
+			await Buscar();
+		}
+
+		this.Productos = await httpClient.GetFromJsonAsync<List<Productos>>("api/Productos");
+
+    }
+
+	 public void Limpiar()
+    {
+        this.Entradas = new Entradas();
+        Total = 0;
+		Mensaje = "Se ha limpiado la pantalla";
+        
+    }
+	
+	public async Task BuscarEntradas(int ProductoId)
+    {
+        var EntradaEncontrada = await httpClient.GetFromJsonAsync<Entradas>($"api/Entradas/{Entradas.EntradaId}");
+        if (EntradaEncontrada != null)
+        {
+            this.Entradas = EntradaEncontrada;
+			
+            StateHasChanged();
+        }
+
+        else
+        {
+            Mensaje = "Entrada no ha sido encontrada";
+        }
+
+		
+
+    }
+
+	 public async Task<bool> Buscar()
+    {
+        try
+        {
+            var entradaEncontrada = await httpClient.GetFromJsonAsync<Entradas>($"api/Entradas/{Entradas.EntradaId}");
+
+            if (entradaEncontrada != null)
+            {
+                int Suma = 0;
+                this.Entradas = entradaEncontrada;
+                this.Entradas.EntradasDetalles = entradaEncontrada.EntradasDetalles.ToList();
+
+                foreach (var item in Entradas.EntradasDetalles)
+                {
+
+                    Suma += item.CantidadUtilizada;
+                    Total = Suma;
+                }
+
+                StateHasChanged();
+                Mensaje = "Se ha encontrado la entrada con exito";
+     
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch
+        {
+            Mensaje = "No se ha encontrado la entrada con exito";
+            return false;
+        }
+    }
+	
+	public async Task AgregarDetalle()
+    {
+        if (ValidarDetalle())
+        {
+            if (Detalle.CantidadUtilizada <= 0)
+            {
+                Mensaje = "No se ha encontrado la entrada con exito";
+                return ;
+            }
+
+
+            if (Entradas != null)
+            {
+                int Suma = 0;
+
+                if (Detalle.CantidadUtilizada < Producido.Existencia)
+                {
+                   	Mensaje = "La cantidad seleccionada es mayor a la existente, se recomienda consultar almacen";
+                    return;
+                }
+
+                Detalle.EntradaId = Entradas.EntradaId;
+                Entradas.EntradasDetalles.Add(Detalle);
+                Detalle = new EntradasDetalle();
+
+                foreach (var item in Entradas.EntradasDetalles)
+                {
+                    Suma += item.CantidadUtilizada;
+                    Total = Suma;
+                }
+                Entradas.CantidadProducida = Total * 2;
+            }
+        }
+    }
+	
+		
+	
+	public void RemoverDetalle(EntradasDetalle detalleRemover)
+	{
+		Entradas.EntradasDetalles.Remove(detalleRemover);
+	}
+
+	public bool ValidarDetalle()
+    {	
+		
+        ValidacionDetalle = string.Empty;
+        if (Detalle.CantidadUtilizada <= 0)
+        {
+			return false ;
+           
+        }
+		if (Detalle.CantidadUtilizada < Producido.Existencia)
+        {
+			return false ;
+           
+        }
+        if (String.IsNullOrWhiteSpace(NombreProducido))
+        {
+			return false;
+        }
+		else
+		{
+			 return true;
+		}
+       
+
+		// AL momento de agregar un detalle debemos de validar si existe discponibilidad de existencia de lostes suficiente como para compacer la solicitud
+
+    }
+	
+	
+	public async void Guardar()
+	{
+		if (Entradas.PesoTotal==Producido.Peso){
+			using var response = await httpClient.PostAsJsonAsync("api/Entradas", Entradas);
+			if (!response.IsSuccessStatusCode)
+			{
+				Mensaje = response.ReasonPhrase ?? "Error";
+				return;
+			}
+			var devuelto = await response.Content.ReadFromJsonAsync<Entradas>();
+			if (devuelto is not null)
+			{
+				Entradas = devuelto;
+				StateHasChanged();
+			}
+		}
+
+		//Falta establecer un mensaje a la hora de que el peso de la produccion no coincida con el de la entrada de mater prima
+		//
+
+	}
+
+ 	public void Nuevo()
+    {
+        this.Entradas = new Entradas();
+        Mensaje = string.Empty;
+        ValidacionDetalle = string.Empty;
+		Total = 0;
+        NombreProducido = string.Empty;
+    }
+
+	   public string ObtenerDescripcion(int Id)
+    {
+        return Productos.Where(p => p.ProductoId == Id).FirstOrDefault().Descripcion;
+    }
+
+	   public async Task Eliminar()
+    {
+        using var response = await httpClient.DeleteAsync($"api/Entradas/{Entradas.EntradaId}");
+
+        if (ValidarDetalle())
+        {
+            if (!response.IsSuccessStatusCode)
+            {
+
+				Mensaje = "No eliminado";
+                return;
+            }
+            else
+            {
+                Nuevo();
+           		 Mensaje = "Eliminado";
+                
+            }
+        }
+    }
+
+	public async Task EliminarDetalle()
+    {
+        using var response = await httpClient.DeleteAsync($"api/Entradas/{Entradas.EntradaId}");
+        if (!response.IsSuccessStatusCode)
+        {
+            Mensaje = response.ReasonPhrase ?? "error";
+            return;
+        }
+        else
+            Nuevo();
+    }
+	//al eliminar debe limpiar el registro sin embargo si el proceso no se realizo correctamente este no deberia realizr mas accion que una notificacion de que le proceso no ha sido efectuado con exito
+   
+}
