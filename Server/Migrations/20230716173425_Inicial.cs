@@ -60,7 +60,7 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EntradasDetalle",
+                name: "EntradasDetalles",
                 columns: table => new
                 {
                     DetalleId = table.Column<int>(type: "INTEGER", nullable: false)
@@ -69,15 +69,14 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                     ProductoId = table.Column<int>(type: "INTEGER", nullable: false),
                     CantidadUtilizada = table.Column<int>(type: "INTEGER", nullable: false),
                     Descripcion = table.Column<string>(type: "TEXT", nullable: true),
-                    FrutoId = table.Column<int>(type: "INTEGER", nullable: false),
                     Nombre = table.Column<string>(type: "TEXT", nullable: true),
                     Disponibilidad = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EntradasDetalle", x => x.DetalleId);
+                    table.PrimaryKey("PK_EntradasDetalles", x => x.DetalleId);
                     table.ForeignKey(
-                        name: "FK_EntradasDetalle_Entradas_EntradaId",
+                        name: "FK_EntradasDetalles_Entradas_EntradaId",
                         column: x => x.EntradaId,
                         principalTable: "Entradas",
                         principalColumn: "EntradaId",
@@ -107,8 +106,8 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_EntradasDetalle_EntradaId",
-                table: "EntradasDetalle",
+                name: "IX_EntradasDetalles_EntradaId",
+                table: "EntradasDetalles",
                 column: "EntradaId");
         }
 
@@ -116,7 +115,7 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "EntradasDetalle");
+                name: "EntradasDetalles");
 
             migrationBuilder.DropTable(
                 name: "Presentaciones");

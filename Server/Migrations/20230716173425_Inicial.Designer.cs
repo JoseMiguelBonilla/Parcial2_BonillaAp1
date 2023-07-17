@@ -11,7 +11,7 @@ using _2Parcial_BonillaAp1.Server.DAL;
 namespace _2Parcial_BonillaAp1.Server.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20230716165451_Inicial")]
+    [Migration("20230716173425_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -46,7 +46,7 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                     b.ToTable("Entradas");
                 });
 
-            modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.EntradasDetalle", b =>
+            modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.EntradasDetalles", b =>
                 {
                     b.Property<int>("DetalleId")
                         .ValueGeneratedOnAdd()
@@ -64,9 +64,6 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                     b.Property<int>("EntradaId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("FrutoId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Nombre")
                         .HasColumnType("TEXT");
 
@@ -77,7 +74,7 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
 
                     b.HasIndex("EntradaId");
 
-                    b.ToTable("EntradasDetalle");
+                    b.ToTable("EntradasDetalles");
                 });
 
             modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.Presentacion", b =>
@@ -179,7 +176,7 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                         });
                 });
 
-            modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.EntradasDetalle", b =>
+            modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.EntradasDetalles", b =>
                 {
                     b.HasOne("_2Parcial_BonillaAp1.Shared.Models.Entradas", null)
                         .WithMany("EntradasDetalles")

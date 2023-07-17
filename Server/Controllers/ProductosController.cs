@@ -7,82 +7,88 @@ using _2Parcial_BonillaAp1.Shared.Models;
 namespace _2Parcial_BonillaAp1.Server.Controller
 {
     
-        [Route("api/[controller]")]
-        [ApiController]
+    [Route("api/[controller]")]
+    [ApiController]
 
-        public class ProductosController : ControllerBase 
-        {
-        
+    public class ProductosController : ControllerBase
+    {
         private readonly Contexto _context;
 
         public ProductosController(Contexto context)
         {
             _context = context;
         }
-     
-         [HttpGet]
-         public async Task<ActionResult<IEnumerable<Productos>>> GetProductos()
+
+        public bool Existe(int ProductoId)
         {
-        if (_context.Productos == null)
-        {
-          return NotFound();
-        }
-        return await _context.Productos.AsNoTracking().ToListAsync();
+            return (_context.Productos?.Any(p => p.ProductoId == ProductoId)).GetValueOrDefault();
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Productos>> GetProductos(int id)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Productos>>> Obtener()
         {
-        if (_context.Productos == null)
-        {
-          return NotFound();
+            if (_context.Productos == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return await _context.Productos.ToListAsync();
+            }
         }
-        var Productos = await _context.Productos.FindAsync(id);
 
-        if (Productos == null)
+        [HttpGet("{ProductoId}")]
+        public async Task<ActionResult<Productos>> ObtenerProductos(int ProductoId)
         {
-            return NotFound();
-        }
+            if (_context.Productos == null)
+            {
+                return NotFound();
+            }
 
-        return Productos;
-         }
+            var producto = await _context.Productos.FindAsync(ProductoId);
+
+            if (producto == null)
+            {
+                return NotFound();
+            }
+            return producto;
+        }
 
         [HttpPost]
-        public async Task<ActionResult<Productos>> PostProductos(Productos Productos)
+        public async Task<ActionResult<Productos>> PostProductos(Productos productos)
         {
-        if (!ProductosExists(Productos.ProductoId) )
-            _context.Productos.Add(Productos);
-        else
-            _context.Productos.Update(Productos);
+            if (!Existe(productos.ProductoId))
+            {
+                _context.Productos.Add(productos);
+            }
+            else
+            {
+                _context.Productos.Update(productos);
+            }
 
-        await _context.SaveChangesAsync();
-        return Ok(Productos);
+            await _context.SaveChangesAsync();
+            return Ok(productos);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProductos(int id)
+        [HttpDelete("{ProductoId}")]
+        public async Task<IActionResult> Eliminar(int ProductoId)
         {
-        if (_context.Productos == null)
-        {
-            return NotFound();
-        }
-        var Productos = await _context.Productos.FindAsync(id);
-        if (Productos == null)
-        {
-            return NotFound();
-        }
+            if (_context.Productos == null)
+            {
+                return NotFound();
+            }
 
-        _context.Productos.Remove(Productos);
-        await _context.SaveChangesAsync();
+            var producto = await _context.Productos.FindAsync(ProductoId);
 
-        return NoContent();
-        }
+            if (producto == null)
+            {
+                return NotFound();
+            }
 
-        private bool ProductosExists(int id)
-        {
-        return (_context.Productos?.Any(e => e.ProductoId == id)).GetValueOrDefault();
+            _context.Productos.Remove(producto);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
-        
     }
 
 }

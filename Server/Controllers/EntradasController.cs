@@ -43,28 +43,28 @@ namespace _2Parcial_BonillaAp1.Server.Controller
                 return NotFound();
             }
 
-            var entrada = await _context.Entradas.Include(e => e.EntradasDetalles).Where(e => e.EntradaId == EntradaId).FirstOrDefaultAsync();
+            var Entradas = await _context.Entradas.Include(e => e.EntradasDetalles).Where(e => e.EntradaId == EntradaId).FirstOrDefaultAsync();
 
-            if (entrada == null)
+            if (Entradas == null)
             {
                 return NotFound();
             }
 
-            foreach (var item in entrada.EntradasDetalles)
+            foreach (var item in Entradas.EntradasDetalles)
             {
                 Console.WriteLine($"{item.DetalleId}, {item.EntradaId}, {item.ProductoId}, {item.CantidadUtilizada}");
             }
 
-            return entrada;
+            return Entradas;
         }
 
         [HttpPost]
-        public async Task<ActionResult<Entradas>> PostEntradas(Entradas entradas)
+        public async Task<ActionResult<Entradas>> PostEntradas(Entradas Entradas)
         {
-            if (!Existe(entradas.EntradaId))
+            if (!Existe(Entradas.EntradaId))
             {
                 Productos? producto = new Productos();
-                foreach (var productoConsumido in entradas.EntradasDetalles)
+                foreach (var productoConsumido in Entradas.EntradasDetalles)
                 {
                     producto = _context.Productos.Find(productoConsumido.ProductoId);
 
@@ -76,18 +76,18 @@ namespace _2Parcial_BonillaAp1.Server.Controller
                         _context.Entry(producto).State = EntityState.Detached;
                     }
                 }
-                await _context.Entradas.AddAsync(entradas);
+                await _context.Entradas.AddAsync(Entradas);
             }
             else
             {
-                var entradaAnterior = _context.Entradas.Include(e => e.EntradasDetalles).AsNoTracking()
-                .FirstOrDefault(e => e.EntradaId == entradas.EntradaId);
+                var EntradasAnterior = _context.Entradas.Include(e => e.EntradasDetalles).AsNoTracking()
+                .FirstOrDefault(e => e.EntradaId == Entradas.EntradaId);
 
                 Productos? producto = new Productos();
 
-                if (entradaAnterior != null && entradaAnterior.EntradasDetalles != null)
+                if (EntradasAnterior != null && EntradasAnterior.EntradasDetalles != null)
                 {
-                    foreach (var productoConsumido in entradaAnterior.EntradasDetalles)
+                    foreach (var productoConsumido in EntradasAnterior.EntradasDetalles)
                     {
                         if (productoConsumido != null)
                         {
@@ -104,22 +104,22 @@ namespace _2Parcial_BonillaAp1.Server.Controller
                     }
                 }
 
-                if (entradaAnterior != null)
+                if (EntradasAnterior != null)
                 {
-                    producto = _context.Productos.Find(entradaAnterior.ProductoId);
+                    producto = _context.Productos.Find(EntradasAnterior.ProductoId);
 
                     if (producto != null)
                     {
-                        producto.Existencia -= entradaAnterior.CantidadProducida;
+                        producto.Existencia -= EntradasAnterior.CantidadProducida;
                         _context.Productos.Update(producto);
                         await _context.SaveChangesAsync();
                         _context.Entry(producto).State = EntityState.Detached;
                     }
                 }
 
-                _context.Database.ExecuteSqlRaw($"Delete from EntradasDetalles where EntradaId = {entradas.EntradaId}");
+                _context.Database.ExecuteSqlRaw($"Delete from EntradasDetalles where EntradaId = {Entradas.EntradaId}");
 
-                foreach (var productoConsumido in entradas.EntradasDetalles)
+                foreach (var productoConsumido in Entradas.EntradasDetalles)
                 {
                     producto = _context.Productos.Find(productoConsumido.ProductoId);
 
@@ -133,34 +133,34 @@ namespace _2Parcial_BonillaAp1.Server.Controller
                     }
                 }
 
-                producto = _context.Productos.Find(entradas.ProductoId);
+                producto = _context.Productos.Find(Entradas.ProductoId);
 
                 if (producto != null)
                 {
-                    producto.Existencia += entradas.CantidadProducida;
+                    producto.Existencia += Entradas.CantidadProducida;
                     _context.Productos.Update(producto);
                     await _context.SaveChangesAsync();
                     _context.Entry(producto).State = EntityState.Detached;
                 }
-                _context.Entradas.Update(entradas);
+                _context.Entradas.Update(Entradas);
             }
 
             await _context.SaveChangesAsync();
-            _context.Entry(entradas).State = EntityState.Detached;
-            return Ok(entradas);
+            _context.Entry(Entradas).State = EntityState.Detached;
+            return Ok(Entradas);
         }
 
         [HttpDelete("{EntradaId}")]
-        public async Task<IActionResult> EliminarEntrada(int EntradaId)
+        public async Task<IActionResult> EliminarEntradas(int EntradaId)
         {
-            var entrada = await _context.Entradas.Include(e => e.EntradasDetalles).FirstOrDefaultAsync(e => e.EntradaId == EntradaId);
+            var Entradas = await _context.Entradas.Include(e => e.EntradasDetalles).FirstOrDefaultAsync(e => e.EntradaId == EntradaId);
 
-            if (entrada == null)
+            if (Entradas == null)
             {
                 return NotFound();
             }
 
-            foreach (var productoConsumido in entrada.EntradasDetalles)
+            foreach (var productoConsumido in Entradas.EntradasDetalles)
             {
                 var producto = await _context.Productos.FindAsync(productoConsumido.ProductoId);
 
@@ -171,15 +171,15 @@ namespace _2Parcial_BonillaAp1.Server.Controller
                 }
             }
 
-            var productoInicial = await _context.Productos.FindAsync(entrada.ProductoId);
+            var productoInicial = await _context.Productos.FindAsync(Entradas.ProductoId);
 
             if (productoInicial != null)
             {
-                productoInicial.Existencia += entrada.CantidadProducida;
+                productoInicial.Existencia += Entradas.CantidadProducida;
                 _context.Productos.Update(productoInicial);
             }
 
-            _context.Entradas.Remove(entrada);
+            _context.Entradas.Remove(Entradas);
             await _context.SaveChangesAsync();
 
             return NoContent();
