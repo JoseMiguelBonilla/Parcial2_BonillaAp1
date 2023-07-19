@@ -345,6 +345,7 @@ public async Task Guardar()
             {
                 int Suma = 0;
                 int Temp = 1;
+                decimal PesoTemp = 0;
 
                 if (EntradasDetalle.CantidadUtilizada > producto.Existencia)
                 {
@@ -361,6 +362,8 @@ public async Task Guardar()
                 {
                     Temp = item.CantidadUtilizada;
                     Suma += item.CantidadUtilizada;
+                    PesoTemp += item.CantidadUtilizada / Suma;
+
                     Total = Suma;
                 }
              
