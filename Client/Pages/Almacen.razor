@@ -1,64 +1,50 @@
-@page "/Consulta"
-
+@page "/Almacen"
 @inject HttpClient httpClient
 
 <div class="card">
     <div class="card">
 
         <div class="card-header">
-            <h3> Consulta de Productos  </h3>
+            <h3> Almacen de Productos  </h3>
         </div>
-
         <div class="card-body">
-
             <form>
                 <div class="input-group d-flex align-items-end">
-
                     <InputSelect class="form-control col-2" @bind-Value="filtro">
-                        <option value="1">EntradaId</option>
-                        <option value="2">Fecha</option>
-                        <option value="3">PesoTotal</option>
-                        <option value="4">ProductoId</option>
-                        <option value="5">CantidadProducida</option>
+                        <option value="1">ProductoId</option>
                     </InputSelect>
-
                     <div class="flex-fill mx-2">
-
                         <div class="input-group">
                             <label class="input-group-text"> Busqueda </label>
                             <InputText class="form-control" @bind-Value="Criterio" />
                         </div>
-
                     </div>
-
                     <button type="button" class="btn btn-sm-10 btn-primary" @onclick="Buscar"> <span class="oi oi-magnifying-glass"></span> Buscar </button>
                 </div>
             </form>
 
         </div>
-        @if (Entradas is not null)
+        @if (Productos is not null)
         {
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>EntradaId</th>
-                        <th>Fecha</th>
-                        <th>Concepto</th>
-                        <th>Peso Total</th>
-                        <th>Cantidad Producida</th>
+                        <th>ProductoId</th>
+                        <th>Descripcion</th>
+                        <th>Existencias</th>
+                        <th>Peso</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var entradas in Entradas)
+                    @foreach (var Productos in Productos)
                     {
                         <tr>
-                            <td>@entradas.EntradaId</td>
-                            <td>@entradas.Fecha</td>
-                            <td>@entradas.Concepto</td>
-                            <td>@entradas.PesoTotal</td>
-                            <td>@entradas.CantidadProducida</td>               
-                            <td><a href="Entradas/@entradas.EntradaId">Ver</a></td>
+                            <td>@Productos.ProductoId</td>
+                            <td>@Productos.Descripcion</td>
+                            <td>@Productos.Existencia</td>
+                            <td>@Productos.Peso</td>              
+                            <td><a href="Productos/@Productos.ProductoId">Ver</a></td>
                         </tr>
                     }
 
@@ -78,18 +64,16 @@
 </div>
 
 @code {
-
-    
-    public List<Entradas>? Entradas { get; set; }
+    public List<Productos>? Productos { get; set; }
     public int conteo { get; set; }
     public string? filtro { get; set; }
     public string? Criterio { get; set; }
 
     public async Task Buscar()
     {
-        Entradas = await httpClient.GetFromJsonAsync<List<Entradas>>($"api/Entradas");
+        Productos = await httpClient.GetFromJsonAsync<List<Productos>>($"api/Productos");
 
-        conteo = Entradas != null ? Entradas!.Count() : 0;
+        conteo = Productos != null ? Productos!.Count() : 0;
         StateHasChanged();
 
     }

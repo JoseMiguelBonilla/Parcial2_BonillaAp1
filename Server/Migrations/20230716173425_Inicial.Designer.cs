@@ -11,7 +11,7 @@ using _2Parcial_BonillaAp1.Server.DAL;
 namespace _2Parcial_BonillaAp1.Server.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20230711000222_Inicial")]
+    [Migration("20230716173425_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -35,8 +35,8 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("PesoTotal")
-                        .HasColumnType("INTEGER");
+                    b.Property<decimal>("PesoTotal")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("ProductoId")
                         .HasColumnType("INTEGER");
@@ -46,7 +46,7 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                     b.ToTable("Entradas");
                 });
 
-            modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.ProductosDetalle", b =>
+            modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.EntradasDetalles", b =>
                 {
                     b.Property<int>("DetalleId")
                         .ValueGeneratedOnAdd()
@@ -55,8 +55,17 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                     b.Property<int>("CantidadUtilizada")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Disponibilidad")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("EntradaId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Nombre")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("ProductoId")
                         .HasColumnType("INTEGER");
@@ -65,12 +74,38 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
 
                     b.HasIndex("EntradaId");
 
-                    b.ToTable("ProductosDetalles");
+                    b.ToTable("EntradasDetalles");
                 });
 
-            modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.TipoProductos", b =>
+            modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.Presentacion", b =>
                 {
-                    b.Property<int?>("TipoId")
+                    b.Property<int>("PresentacionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("PresentacionId");
+
+                    b.ToTable("Presentaciones");
+
+                    b.HasData(
+                        new
+                        {
+                            PresentacionId = 1,
+                            Descripcion = "Saco"
+                        },
+                        new
+                        {
+                            PresentacionId = 2,
+                            Descripcion = "Caja"
+                        });
+                });
+
+            modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.Productos", b =>
+                {
+                    b.Property<int>("ProductoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -80,55 +115,71 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
                     b.Property<int>("Existencia")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ProductoId")
+                    b.Property<decimal>("Peso")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PresentacionId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("TipoId");
+                    b.HasKey("ProductoId");
 
-                    b.ToTable("TipoProductos");
+                    b.ToTable("Productos");
 
                     b.HasData(
                         new
                         {
-                            TipoId = 1,
+                            ProductoId = 1,
                             Descripcion = "Mani",
-                            Existencia = 0,
-                            ProductoId = 0
+                            Existencia = 100,
+                            Peso = 100m,
+                            PresentacionId = 1
                         },
                         new
                         {
-                            TipoId = 3,
+                            ProductoId = 2,
                             Descripcion = "Pasas",
-                            Existencia = 0,
-                            ProductoId = 0
+                            Existencia = 100,
+                            Peso = 100m,
+                            PresentacionId = 1
                         },
                         new
                         {
-                            TipoId = 4,
+                            ProductoId = 3,
                             Descripcion = "Pistacho",
-                            Existencia = 0,
-                            ProductoId = 0
+                            Existencia = 100,
+                            Peso = 100m,
+                            PresentacionId = 1
                         },
                         new
                         {
-                            TipoId = 5,
+                            ProductoId = 4,
                             Descripcion = "Ciruela",
-                            Existencia = 0,
-                            ProductoId = 0
+                            Existencia = 100,
+                            Peso = 100m,
+                            PresentacionId = 1
                         },
                         new
                         {
-                            TipoId = 6,
+                            ProductoId = 5,
                             Descripcion = "Arandanos",
+                            Existencia = 100,
+                            Peso = 100m,
+                            PresentacionId = 1
+                        },
+                        new
+                        {
+                            ProductoId = 6,
+                            Descripcion = "Producto Mixto",
                             Existencia = 0,
-                            ProductoId = 0
+                            Peso = 1m,
+                            PresentacionId = 2
                         });
                 });
 
-            modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.ProductosDetalle", b =>
+            modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.EntradasDetalles", b =>
                 {
                     b.HasOne("_2Parcial_BonillaAp1.Shared.Models.Entradas", null)
-                        .WithMany("ClientesDetalle")
+                        .WithMany("EntradasDetalles")
                         .HasForeignKey("EntradaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -136,7 +187,7 @@ namespace _2Parcial_BonillaAp1.Server.Migrations
 
             modelBuilder.Entity("_2Parcial_BonillaAp1.Shared.Models.Entradas", b =>
                 {
-                    b.Navigation("ClientesDetalle");
+                    b.Navigation("EntradasDetalles");
                 });
 #pragma warning restore 612, 618
         }

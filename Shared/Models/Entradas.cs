@@ -5,25 +5,23 @@ namespace _2Parcial_BonillaAp1.Shared.Models
 {
     public class Entradas
     {
-		/*descripcion de los productos*/ 
+	
 	[Key]
-
-	[Required(ErrorMessage = "El EntradaId es requerido")]
 	public int EntradaId { get; set; }
 
-	public DateTime Fecha { get; set; }
+	public DateTime Fecha { get; set; } = DateTime.Now;
 
 	public string? Concepto { get; set; }
 
-	public int PesoTotal { get; set; }
+	public int CantidadProducida { get; set;}
+
+	public decimal PesoTotal { get; set; }
 
 	public int ProductoId { get; set; }
 
-	public int CantidadProducida { get; set;}
-
 	[ForeignKey("EntradaId")]
-	public ICollection<EntradasDetalle> ClientesDetalle { get; set; } = new List<EntradasDetalle>();
+	public ICollection<EntradasDetalles> EntradasDetalles { get; set; } = new List<EntradasDetalles>();
     
     }
 
-    }
+}
